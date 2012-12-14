@@ -1,4 +1,4 @@
-# SConstruct for src/vmm
+#!/bin/bash
 
 # -------------------------------------------------------------------------- #
 # Copyright 2002-2012, OpenNebula Project Leads (OpenNebula.org)             #
@@ -16,20 +16,12 @@
 # limitations under the License.                                             #
 #--------------------------------------------------------------------------- #
 
-Import('env')
+source $(dirname $0)/lxcrc
 
-lib_name='nebula_vmm'
+deploy_id=$1
+dest_host=$2
+src_host=$3
 
-# Sources to generate the library
-source_files=[
-    'VirtualMachineManager.cc',
-    'VirtualMachineManagerDriver.cc',
-    'XenDriver.cc',
-    'LibVirtDriverKVM.cc',
-    'LibVirtDriverLXC.cc',
-    'LibVirtDriverVMware.cc',
-    'XMLDriver.cc'
-]
+virsh --connect $LXC_PROTOCOL://$src_host/ \
+	migrate --live $deploy_id $LXC_PROTOCOL://$dest_host/
 
-# Build library
-env.StaticLibrary(lib_name, source_files)

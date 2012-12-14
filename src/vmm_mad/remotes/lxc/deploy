@@ -1,4 +1,4 @@
-# SConstruct for src/vmm
+#!/bin/bash
 
 # -------------------------------------------------------------------------- #
 # Copyright 2002-2012, OpenNebula Project Leads (OpenNebula.org)             #
@@ -16,20 +16,19 @@
 # limitations under the License.                                             #
 #--------------------------------------------------------------------------- #
 
-Import('env')
+source $(dirname $0)/lxcrc
+source $(dirname $0)/../../scripts_common.sh
 
-lib_name='nebula_vmm'
+domain=$1
 
-# Sources to generate the library
-source_files=[
-    'VirtualMachineManager.cc',
-    'VirtualMachineManagerDriver.cc',
-    'XenDriver.cc',
-    'LibVirtDriverKVM.cc',
-    'LibVirtDriverLXC.cc',
-    'LibVirtDriverVMware.cc',
-    'XMLDriver.cc'
-]
+mkdir -p `dirname $domain`
+cat > $domain
 
-# Build library
-env.StaticLibrary(lib_name, source_files)
+data=`virsh --connect $LIBVIRT_URI create $domain`
+
+if [ "x$?" = "x0" ]; then
+    echo $data | sed 's/Domain //' | sed 's/ created from .*$//'
+else
+    error_message "Could not create domain from $domain"
+    exit -1
+fi

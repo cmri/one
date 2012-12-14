@@ -1208,6 +1208,11 @@ void VirtualMachineManager::load_mads(int uid)
             vmm_driver = new LibVirtDriver(uid, vattr->value(),
                                            (uid != 0),vmpool,"kvm");
         }
+        else if ( type == "LXC" )
+        {
+            vmm_driver = new LibVirtDriver(uid, vattr->value(),
+                                           (uid != 0),vmpool,"lxc");
+        }
         else if ( type == "VMWARE" )
         {
             vmm_driver = new LibVirtDriver(uid, vattr->value(),

@@ -54,6 +54,9 @@ http://*)
     log "Cloning $SRC"
     exec_and_log "$SCP $SRC $DST" \
         "Error copying $SRC to $DST"
+    log "Extracting $DST"
+    exec_and_log "$SSH $DST_HOST $SUDO tar xvf $DST_DIR/disk.0 -C $DST_DIR" \
+        "Error tar failed"
     ;;
 esac
 

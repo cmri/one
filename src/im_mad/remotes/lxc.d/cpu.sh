@@ -1,4 +1,4 @@
-# SConstruct for src/vmm
+#!/bin/sh
 
 # -------------------------------------------------------------------------- #
 # Copyright 2002-2012, OpenNebula Project Leads (OpenNebula.org)             #
@@ -16,20 +16,10 @@
 # limitations under the License.                                             #
 #--------------------------------------------------------------------------- #
 
-Import('env')
+if [ -f /proc/cpuinfo ]; then
 
-lib_name='nebula_vmm'
+    echo -n "MODELNAME=\""
+    grep -m 1 "model name" /proc/cpuinfo | cut -d: -f2 | sed -e 's/^ *//' | sed -e 's/$/"/'
+    
+fi
 
-# Sources to generate the library
-source_files=[
-    'VirtualMachineManager.cc',
-    'VirtualMachineManagerDriver.cc',
-    'XenDriver.cc',
-    'LibVirtDriverKVM.cc',
-    'LibVirtDriverLXC.cc',
-    'LibVirtDriverVMware.cc',
-    'XMLDriver.cc'
-]
-
-# Build library
-env.StaticLibrary(lib_name, source_files)

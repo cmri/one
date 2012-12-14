@@ -56,6 +56,10 @@ private:
         {
             rc = deployment_description_vmware(vm,file_name);
         }
+        else if (emulator == "lxc")
+        {
+            rc = deployment_description_lxc(vm,file_name);
+        }
 
         return rc;
     }
@@ -65,6 +69,10 @@ private:
         const string&           file_name) const;
 
     int deployment_description_vmware(
+        const VirtualMachine *  vm,
+        const string&           file_name) const;
+
+    int deployment_description_lxc(
         const VirtualMachine *  vm,
         const string&           file_name) const;
 

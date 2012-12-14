@@ -1,4 +1,4 @@
-# SConstruct for src/vmm
+#!/bin/bash 
 
 # -------------------------------------------------------------------------- #
 # Copyright 2002-2012, OpenNebula Project Leads (OpenNebula.org)             #
@@ -16,20 +16,40 @@
 # limitations under the License.                                             #
 #--------------------------------------------------------------------------- #
 
-Import('env')
+source $(dirname $0)/lxcrc
+source $(dirname $0)/../../scripts_common.sh
 
-lib_name='nebula_vmm'
+#------------------------------------------------------------------------------
+# Wait the VM to shutdown TIMEOUT (xPOLL_INTERVAL) seconds.
+# Set to ~10min
+#------------------------------------------------------------------------------
+POLL_INTERVAL=2
+TIMEOUT=300
 
-# Sources to generate the library
-source_files=[
-    'VirtualMachineManager.cc',
-    'VirtualMachineManagerDriver.cc',
-    'XenDriver.cc',
-    'LibVirtDriverKVM.cc',
-    'LibVirtDriverLXC.cc',
-    'LibVirtDriverVMware.cc',
-    'XMLDriver.cc'
-]
+deploy_id=$1
 
-# Build library
-env.StaticLibrary(lib_name, source_files)
+virsh --connect $LIBVIRT_URI shutdown $deploy_id
+
+exit_code=$?
+
+if [ "$exit_code" != "0" ]; then
+    error_message "Could not shutdown $deploy_id"
+    exit $exit_code
+fi
+
+count=0
+while [ $(virsh --connect $LIBVIRT_URI --readonly dominfo $deploy_id > /dev/null 2>&1; echo $?) = "0" ]
+do 
+	sleep $POLL_INTERVAL
+	if [ "$count" -gt "$TIMEOUT" ]
+	then
+	    error_message "Timeout reached and VM $deploy_id is still alive"
+		echo "Timeout reached" >&2
+		exit 1
+	fi
+	let count=count+$POLL_INTERVAL
+done
+
+sleep 4
+
+exit 0
