@@ -220,10 +220,12 @@ LIB_DIRS="$LIB_LOCATION/ruby \
 VAR_DIRS="$VAR_LOCATION/remotes \
           $VAR_LOCATION/remotes/im \
           $VAR_LOCATION/remotes/im/kvm.d \
+          $VAR_LOCATION/remotes/im/lxc.d \
           $VAR_LOCATION/remotes/im/xen.d \
           $VAR_LOCATION/remotes/im/vmware.d \
           $VAR_LOCATION/remotes/im/ganglia.d \
           $VAR_LOCATION/remotes/vmm/kvm \
+          $VAR_LOCATION/remotes/vmm/lxc \
           $VAR_LOCATION/remotes/vnm \
           $VAR_LOCATION/remotes/vnm/802.1Q \
           $VAR_LOCATION/remotes/vnm/dummy \
@@ -366,6 +368,7 @@ INSTALL_FILES=(
     MADS_LIB_FILES:$LIB_LOCATION/mads
     IM_PROBES_FILES:$VAR_LOCATION/remotes/im
     IM_PROBES_KVM_FILES:$VAR_LOCATION/remotes/im/kvm.d
+    IM_PROBES_LXC_FILES:$VAR_LOCATION/remotes/im/lxc.d
     IM_PROBES_XEN_FILES:$VAR_LOCATION/remotes/im/xen.d
     IM_PROBES_VMWARE_FILES:$VAR_LOCATION/remotes/im/vmware.d
     IM_PROBES_GANGLIA_FILES:$VAR_LOCATION/remotes/im/ganglia.d
@@ -378,6 +381,7 @@ INSTALL_FILES=(
     AUTH_PLAIN_FILES:$VAR_LOCATION/remotes/auth/plain
     AUTH_QUOTA_FILES:$VAR_LOCATION/remotes/auth/quota
     VMM_EXEC_KVM_SCRIPTS:$VAR_LOCATION/remotes/vmm/kvm
+    VMM_EXEC_LXC_SCRIPTS:$VAR_LOCATION/remotes/vmm/lxc
     VMM_EXEC_XEN_SCRIPTS:$VAR_LOCATION/remotes/vmm/xen
     VMM_EXEC_VMWARE_SCRIPTS:$VAR_LOCATION/remotes/vmm/vmware
     SHARED_TM_COMMANDS_LIB_FILES:$LIB_LOCATION/tm_commands/shared
@@ -647,6 +651,22 @@ VMM_EXEC_KVM_SCRIPTS="src/vmm_mad/remotes/kvm/cancel \
                     src/vmm_mad/remotes/kvm/shutdown"
 
 #-------------------------------------------------------------------------------
+# VMM SH Driver LXC scripts, to be installed under $REMOTES_LOCATION/vmm/lxc
+#-------------------------------------------------------------------------------
+
+VMM_EXEC_LXC_SCRIPTS="src/vmm_mad/remotes/lxc/cancel \
+                    src/vmm_mad/remotes/lxc/deploy \
+                    src/vmm_mad/remotes/lxc/lxcrc \
+                    src/vmm_mad/remotes/lxc/migrate \
+                    src/vmm_mad/remotes/lxc/migrate_local \
+                    src/vmm_mad/remotes/lxc/restore \
+                    src/vmm_mad/remotes/lxc/reboot \
+                    src/vmm_mad/remotes/lxc/save \
+                    src/vmm_mad/remotes/lxc/poll \
+                    src/vmm_mad/remotes/lxc/poll_ganglia \
+                    src/vmm_mad/remotes/lxc/shutdown"
+
+#-------------------------------------------------------------------------------
 # VMM SH Driver Xen scripts, to be installed under $REMOTES_LOCATION/vmm/xen
 #-------------------------------------------------------------------------------
 
@@ -686,6 +706,11 @@ IM_PROBES_KVM_FILES="src/im_mad/remotes/kvm.d/kvm.rb \
                      src/im_mad/remotes/kvm.d/architecture.sh \
                      src/im_mad/remotes/kvm.d/cpu.sh \
                      src/im_mad/remotes/kvm.d/name.sh"
+
+IM_PROBES_LXC_FILES="src/im_mad/remotes/lxc.d/lxc.rb \
+                     src/im_mad/remotes/lxc.d/architecture.sh \
+                     src/im_mad/remotes/lxc.d/cpu.sh \
+                     src/im_mad/remotes/lxc.d/name.sh"
 
 IM_PROBES_XEN_FILES="src/im_mad/remotes/xen.d/xen.rb \
                      src/im_mad/remotes/xen.d/architecture.sh \
@@ -843,6 +868,7 @@ VMM_EC2_ETC_FILES="src/vmm_mad/ec2/vmm_ec2rc \
 
 VMM_EXEC_ETC_FILES="src/vmm_mad/exec/vmm_execrc \
                   src/vmm_mad/exec/vmm_exec_kvm.conf \
+                  src/vmm_mad/exec/vmm_exec_lxc.conf \
                   src/vmm_mad/exec/vmm_exec_xen.conf \
                   src/vmm_mad/exec/vmm_exec_vmware.conf"
 
