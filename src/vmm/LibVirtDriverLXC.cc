@@ -159,8 +159,9 @@ int LibVirtDriver::deployment_description_lxc(
 
 
     file << "\t\t</filesystem>" << endl;
-    file << "\t<interface type='network'>" << endl;
-    file << "\t\t<source network='default'/>" << endl;
+    file << "\t<interface type='bridge'>" << endl;
+    file << "\t\t<source bridge='kvmbr0'/>" << endl;
+    file << "\t\t<model type='virtio'/>" <<endl;
     file << "\t</interface>" << endl;
     file << "\t<console type='pty'/>" << endl;
 

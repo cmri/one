@@ -34,7 +34,7 @@ fi
 
 . $TMCOMMON
 
-
+DST_LXC=`dirname $DST`
 DST_PATH=`arg_path $DST`
 DST_DIR=`dirname $DST_PATH`
 DST_FILE=`basename $DST_PATH`
@@ -64,9 +64,13 @@ for f in $SRC; do
     esac
 done
 
-exec_and_log "$MKISOFS -o $TMP_DIR/$DST_FILE -J -R $ISO_DIR" \
-    "Error creating iso fs"
-exec_and_log "$SCP $TMP_DIR/$DST_FILE $DST" \
+#exec_and_log "$MKISOFS -o $TMP_DIR/$DST_FILE -J -R $ISO_DIR" \
+#    "Error creating iso fs"
+#exec_and_log "$SCP $TMP_DIR/$DST_FILE $DST" \
+#    "Error copying $TMP_DIR/$DST_FILE to $DST"
+exec_and_log "$SCP -r $ISO_DIR/* $DST_LXC/lxc/rootfs/mnt/" \
     "Error copying $TMP_DIR/$DST_FILE to $DST"
 exec_and_log "rm -rf $TMP_DIR" \
     "Error deleting $TMP_DIR"
+exec_and_log "rm -rf $ISO_DIR" \
+    "Error deleting $ISO_DIR"
