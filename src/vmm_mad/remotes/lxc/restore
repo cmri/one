@@ -19,7 +19,7 @@
 source $(dirname $0)/lxcrc
 source $(dirname $0)/../../scripts_common.sh
 
-file=$1
-
-exec_and_log "virsh --connect $LIBVIRT_URI restore $file" \
-    "Could not restore from $file"
+#file=$1
+deploy_id=$3
+exec_and_log "virsh --connect $LIBVIRT_URI resume lxc-$deploy_id" \
+    "Could not restore from lxc-$deploy_id"

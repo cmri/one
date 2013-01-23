@@ -20,12 +20,12 @@ source $(dirname $0)/lxcrc
 source $(dirname $0)/../../scripts_common.sh
 
 deploy_id=$1
-file=$2
+#file=$2
 
-if [ ! -f $file ]; then
-    touch $file
-    chmod 666 $file
-fi
+#if [ ! -f $file ]; then
+#    touch $file
+#    chmod 666 $file
+#fi
 
-exec_and_log "virsh --connect $LIBVIRT_URI save $deploy_id $file" \
-    "Could not save $deploy_id to $file"
+exec_and_log "virsh --connect $LIBVIRT_URI suspend $deploy_id" \
+    "Could not save $deploy_id"
